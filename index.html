@@ -1,0 +1,1058 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Talesmith — Forging Magical Stories</title>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    /* ==========================================================================
+       TALESMITH - EMBEDDED STYLESHEET
+       ========================================================================== */
+
+    :root {
+      --font-display: 'Baloo 2', 'Nunito', system-ui, sans-serif;
+      --font-body: 'Nunito', system-ui, sans-serif;
+
+      /* Cozy Workshop/Talesmith Palette */
+      --clr-primary-dark: #3e2723;   /* Deep mahogany wood */
+      --clr-primary-mid: #5d4037;    /* Warm leather brown */
+      --clr-parchment-light: #ffe0b2;/* Soft parchment gold */
+      --clr-cream-bg: #fffbf7;       /* Warm candlelit cream */
+      --clr-cream-card: #ffffff;
+      --clr-accent-gold: #ffb703;    /* Glowing ember gold */
+      --clr-accent-brown: #8d6e63;   /* Soft brass */
+      --clr-text-dark: #2d3748;
+      --clr-text-muted: #718096;
+      --clr-success: #4ade80;
+      --clr-toast-bg: #2d3748;
+
+      /* Layout & Shadows */
+      --radius-sm: 8px;
+      --radius-md: 16px;
+      --radius-lg: 24px;
+      --shadow-sm: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+      --shadow-md: 0 10px 15px -3px rgba(93, 64, 55, 0.1), 0 4px 6px -2px rgba(93, 64, 55, 0.05);
+      --shadow-lg: 0 20px 25px -5px rgba(62, 39, 35, 0.15);
+      --transition-bouncy: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      --transition-smooth: all 0.25s ease;
+    }
+
+    /* --- Base & Reset --- */
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: var(--font-body);
+      background-color: var(--clr-cream-bg);
+      color: var(--clr-text-dark);
+      min-height: 100vh;
+      position: relative;
+      overflow-x: hidden;
+      line-height: 1.6;
+    }
+
+    /* ==========================================================================
+       BACKGROUND DECORATIONS
+       ========================================================================== */
+    .bg-decor {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+      pointer-events: none;
+      overflow: hidden;
+    }
+
+    .bg-decor__blob {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(80px);
+      opacity: 0.4;
+    }
+
+    .bg-decor__blob--1 {
+      top: -10%;
+      right: -10%;
+      width: 400px;
+      height: 400px;
+      background-color: var(--clr-parchment-light);
+    }
+
+    .bg-decor__blob--2 {
+      bottom: 10%;
+      left: -10%;
+      width: 500px;
+      height: 500px;
+      background-color: rgba(255, 224, 178, 0.5);
+    }
+
+    .bg-decor__blob--3 {
+      top: 40%;
+      right: 15%;
+      width: 300px;
+      height: 300px;
+      background-color: rgba(255, 183, 3, 0.15);
+    }
+
+    .bg-decor__star {
+      position: absolute;
+      font-size: 2rem;
+      animation: float 6s ease-in-out infinite alternate;
+    }
+
+    .bg-decor__star--1 { top: 15%; left: 8%; animation-delay: 0s; }
+    .bg-decor__star--2 { top: 45%; right: 8%; animation-delay: 2s; }
+    .bg-decor__star--3 { bottom: 20%; left: 12%; animation-delay: 4s; }
+
+    @keyframes float {
+      0% { transform: translateY(0px) rotate(0deg); }
+      100% { transform: translateY(-15px) rotate(10deg); }
+    }
+
+    /* ==========================================================================
+       NAVIGATION BAR
+       ========================================================================== */
+    .navbar {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 2.5rem 1rem 1.5rem;
+      text-align: center;
+    }
+
+    .navbar__brand {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-bottom: 0.25rem;
+    }
+
+    .navbar__icon {
+      font-size: 3rem;
+      filter: drop-shadow(0 4px 6px rgba(0,0,0,0.1));
+    }
+
+    .navbar__title {
+      font-family: var(--font-display);
+      font-size: 2.75rem;
+      font-weight: 800;
+      color: var(--clr-primary-dark);
+      letter-spacing: -0.5px;
+      line-height: 1.1;
+    }
+
+    .navbar__tagline {
+      font-size: 1.1rem;
+      color: var(--clr-primary-mid);
+      font-weight: 600;
+    }
+
+    /* ==========================================================================
+       PAGE LAYOUT
+       ========================================================================== */
+    .page {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 0 1.5rem 4rem;
+      display: flex;
+      flex-direction: column;
+      gap: 3rem;
+    }
+
+    /* ==========================================================================
+       CARDS & COMMON UTILITIES
+       ========================================================================== */
+    .upload-card, .library {
+      background-color: var(--clr-cream-card);
+      border-radius: var(--radius-lg);
+      padding: 2rem;
+      box-shadow: var(--shadow-md);
+      border: 4px solid var(--clr-parchment-light);
+      transition: var(--transition-smooth);
+    }
+
+    .upload-card:hover {
+      box-shadow: var(--shadow-lg);
+      transform: translateY(-2px);
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    /* ==========================================================================
+       TEACHER / SMITH UPLOAD
+       ========================================================================== */
+    .upload-card__heading {
+      display: flex;
+      align-items: center;
+      gap: 1.25rem;
+      margin-bottom: 2rem;
+    }
+
+    .upload-card__icon {
+      font-size: 2.5rem;
+      background-color: var(--clr-parchment-light);
+      padding: 0.75rem;
+      border-radius: var(--radius-md);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .upload-card__heading h2 {
+      font-family: var(--font-display);
+      font-size: 1.6rem;
+      color: var(--clr-primary-dark);
+      font-weight: 700;
+    }
+
+    .upload-card__heading p {
+      color: var(--clr-text-muted);
+      font-size: 0.95rem;
+    }
+
+    /* Dropzone styling */
+    .dropzone {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      border: 3px dashed var(--clr-primary-mid);
+      border-radius: var(--radius-md);
+      padding: 3rem 1.5rem;
+      background-color: rgba(255, 224, 178, 0.2);
+      cursor: pointer;
+      transition: var(--transition-bouncy);
+      text-align: center;
+    }
+
+    .dropzone:hover {
+      background-color: rgba(255, 224, 178, 0.4);
+      border-color: var(--clr-primary-dark);
+      transform: scale(1.02);
+    }
+
+    .dropzone__icon {
+      font-size: 3rem;
+      margin-bottom: 1rem;
+    }
+
+    .dropzone__text {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: var(--clr-primary-dark);
+      margin-bottom: 0.25rem;
+    }
+
+    .dropzone__subtext {
+      color: var(--clr-text-muted);
+      font-size: 0.9rem;
+    }
+
+    .dropzone__file {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      animation: popIn 0.3s ease-out;
+    }
+
+    .dropzone__file-icon {
+      font-size: 3.5rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .dropzone__file-name {
+      font-weight: 700;
+      color: var(--clr-primary-dark);
+    }
+
+    @keyframes popIn {
+      from { transform: scale(0.8); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+
+    /* Progress bar */
+    .progress-wrap {
+      margin-top: 1.5rem;
+      width: 100%;
+    }
+
+    .progress-track {
+      width: 100%;
+      height: 12px;
+      background-color: var(--clr-parchment-light);
+      border-radius: 999px;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      width: 0%;
+      height: 100%;
+      background-color: var(--clr-primary-mid);
+      border-radius: 999px;
+      transition: width 0.1s linear;
+    }
+
+    .progress-label {
+      margin-top: 0.5rem;
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: var(--clr-primary-mid);
+      text-align: center;
+    }
+
+    /* Buttons */
+    .btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      margin-top: 1.5rem;
+      padding: 1.1rem 2rem;
+      border: none;
+      border-radius: var(--radius-md);
+      font-family: var(--font-display);
+      font-size: 1.25rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: var(--transition-bouncy);
+      box-shadow: 0 4px 0px rgba(0,0,0,0.15);
+    }
+
+    .btn--primary {
+      background-color: var(--clr-accent-gold);
+      color: var(--clr-primary-dark);
+    }
+
+    .btn--primary:hover:not(:disabled) {
+      background-color: #fca311;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 0px rgba(0,0,0,0.15);
+    }
+
+    .btn--primary:active:not(:disabled) {
+      transform: translateY(2px);
+      box-shadow: 0 2px 0px rgba(0,0,0,0.15);
+    }
+
+    .btn:disabled {
+      background-color: #cbd5e1;
+      color: #94a3b8;
+      box-shadow: none;
+      cursor: not-allowed;
+    }
+
+    /* ==========================================================================
+       STORY LIBRARY / WORKSHOP
+       ========================================================================== */
+    .library__heading {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+
+    .library__icon {
+      font-size: 2rem;
+    }
+
+    .library__heading h2 {
+      font-family: var(--font-display);
+      font-size: 1.6rem;
+      color: var(--clr-primary-dark);
+    }
+
+    /* Story Grid & Cards */
+    .story-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .story-card {
+      background-color: var(--clr-cream-bg);
+      border: 3px solid var(--clr-parchment-light);
+      border-radius: var(--radius-md);
+      padding: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      cursor: pointer;
+      transition: var(--transition-bouncy);
+    }
+
+    .story-card:hover {
+      transform: translateY(-6px) rotate(-1deg);
+      border-color: var(--clr-primary-mid);
+      box-shadow: var(--shadow-md);
+    }
+
+    .story-card__top {
+      margin-bottom: 1.5rem;
+    }
+
+    .story-card__emoji {
+      font-size: 2.5rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .story-card__title {
+      font-family: var(--font-display);
+      font-size: 1.25rem;
+      color: var(--clr-primary-dark);
+      line-height: 1.3;
+    }
+
+    .story-card__footer {
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+      font-size: 0.85rem;
+      color: var(--clr-text-muted);
+      border-top: 1px dashed var(--clr-parchment-light);
+      padding-top: 0.75rem;
+    }
+
+    .story-card__date, .story-card__voice {
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+    }
+
+    /* Empty State */
+    .empty-state {
+      text-align: center;
+      padding: 4rem 1rem;
+    }
+
+    .empty-state__icon {
+      font-size: 4rem;
+      margin-bottom: 1rem;
+    }
+
+    .empty-state__text {
+      font-size: 1.1rem;
+      color: var(--clr-text-muted);
+      font-weight: 600;
+    }
+
+    /* ==========================================================================
+       MODAL (POPOVER)
+       ========================================================================== */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: rgba(62, 39, 35, 0.85);
+      backdrop-filter: blur(4px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      padding: 1rem;
+      animation: fadeIn 0.2s ease-out;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    .modal {
+      background-color: var(--clr-cream-card);
+      width: 100%;
+      max-width: 650px;
+      max-height: 85vh;
+      border-radius: var(--radius-lg);
+      border: 5px solid var(--clr-primary-dark);
+      padding: 2.5rem 2rem;
+      position: relative;
+      overflow-y: auto;
+      box-shadow: var(--shadow-lg);
+      animation: scaleIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    @keyframes scaleIn {
+      from { transform: scale(0.9); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+
+    .modal__close {
+      position: absolute;
+      top: 1.25rem;
+      right: 1.25rem;
+      background-color: var(--clr-parchment-light);
+      border: none;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      font-size: 1rem;
+      cursor: pointer;
+      color: var(--clr-primary-dark);
+      transition: var(--transition-smooth);
+    }
+
+    .modal__close:hover {
+      background-color: var(--clr-primary-mid);
+      color: white;
+      transform: rotate(90deg);
+    }
+
+    .modal__header {
+      margin-bottom: 1.5rem;
+    }
+
+    .modal__title {
+      font-family: var(--font-display);
+      font-size: 2rem;
+      color: var(--clr-primary-dark);
+      margin-bottom: 0.5rem;
+      padding-right: 2rem;
+    }
+
+    .modal__meta {
+      display: flex;
+      gap: 1rem;
+      font-size: 0.9rem;
+      color: var(--clr-text-muted);
+    }
+
+    .modal__meta-item {
+      background-color: var(--clr-cream-bg);
+      padding: 0.25rem 0.75rem;
+      border-radius: 999px;
+      font-weight: 600;
+    }
+
+    /* Audio Player */
+    .modal__audio-wrap {
+      background-color: var(--clr-parchment-light);
+      padding: 1rem;
+      border-radius: var(--radius-md);
+      margin-bottom: 1.5rem;
+      display: flex;
+      justify-content: center;
+    }
+
+    .modal__audio {
+      width: 100%;
+      outline: none;
+    }
+
+    /* Story Text Container */
+    .modal__story-wrap {
+      border-top: 2px dashed var(--clr-parchment-light);
+      padding-top: 1.5rem;
+    }
+
+    .modal__story-heading {
+      font-family: var(--font-display);
+      font-size: 1.3rem;
+      color: var(--clr-primary-dark);
+      margin-bottom: 0.75rem;
+    }
+
+    .modal__story-text {
+      font-size: 1.05rem;
+      line-height: 1.7;
+      color: var(--clr-text-dark);
+      max-height: 250px;
+      overflow-y: auto;
+      padding-right: 0.5rem;
+    }
+
+    /* Custom Scrollbar for Modal Text */
+    .modal__story-text::-webkit-scrollbar {
+      width: 8px;
+    }
+    .modal__story-text::-webkit-scrollbar-track {
+      background: var(--clr-cream-bg);
+      border-radius: 4px;
+    }
+    .modal__story-text::-webkit-scrollbar-thumb {
+      background: var(--clr-parchment-light);
+      border-radius: 4px;
+    }
+    .modal__story-text::-webkit-scrollbar-thumb:hover {
+      background: var(--clr-primary-mid);
+    }
+
+    /* ==========================================================================
+       SPINNERS & OVERLAYS
+       ========================================================================== */
+    .loading-overlay {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background-color: rgba(255, 255, 255, 0.72);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1100;
+    }
+
+    .spinner {
+      width: 50px;
+      height: 50px;
+      border: 5px solid var(--clr-parchment-light);
+      border-top-color: var(--clr-primary-dark);
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+
+    .mini-spinner {
+      width: 30px;
+      height: 30px;
+      border: 3px solid var(--clr-parchment-light);
+      border-top-color: var(--clr-primary-dark);
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin: 2rem auto;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    /* ==========================================================================
+       TOAST SYSTEM (NOTIFICATIONS)
+       ========================================================================== */
+    .toast-container {
+      position: fixed;
+      bottom: 2rem;
+      right: 2rem;
+      z-index: 1200;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .toast {
+      background-color: var(--clr-toast-bg);
+      color: white;
+      padding: 1rem 1.5rem;
+      border-radius: var(--radius-md);
+      box-shadow: var(--shadow-lg);
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      font-weight: 600;
+      animation: slideIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    @keyframes slideIn {
+      from { transform: translateX(120%); }
+      to { transform: translateX(0); }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ==================== BACKGROUND DECORATION ==================== -->
+  <div class="bg-decor" aria-hidden="true">
+    <span class="bg-decor__blob bg-decor__blob--1"></span>
+    <span class="bg-decor__blob bg-decor__blob--2"></span>
+    <span class="bg-decor__blob bg-decor__blob--3"></span>
+    <span class="bg-decor__star bg-decor__star--1">✨</span>
+    <span class="bg-decor__star bg-decor__star--2">🕯️</span>
+    <span class="bg-decor__star bg-decor__star--3">✨</span>
+  </div>
+
+  <!-- ==================== TOP NAVIGATION ==================== -->
+  <header class="navbar">
+    <div class="navbar__brand">
+      <span class="navbar__icon">📖</span>
+      <span class="navbar__title">Talesmith</span>
+    </div>
+    <p class="navbar__tagline">Forging magical stories, read aloud</p>
+  </header>
+
+  <main class="page">
+
+    <!-- ==================== TEACHER / SMITH UPLOAD ==================== -->
+    <section class="upload-card" id="uploadCard">
+      <div class="upload-card__heading">
+        <span class="upload-card__icon">🧑‍🔧</span>
+        <div>
+          <h2>Talesmith Forge</h2>
+          <p>Hammer a new text story into the library</p>
+        </div>
+      </div>
+
+      <label class="dropzone" for="fileInput" id="dropzone">
+        <input type="file" id="fileInput" accept=".txt" hidden>
+        <div class="dropzone__content" id="dropzoneContent">
+          <span class="dropzone__icon">📜</span>
+          <p class="dropzone__text">Choose a <strong>.txt</strong> story draft</p>
+          <p class="dropzone__subtext">or drop it into the forge</p>
+        </div>
+        <div class="dropzone__file hidden" id="dropzoneFile">
+          <span class="dropzone__file-icon">📃</span>
+          <span class="dropzone__file-name" id="fileName">story.txt</span>
+        </div>
+      </label>
+
+      <div class="progress-wrap hidden" id="progressWrap">
+        <div class="progress-track">
+          <div class="progress-fill" id="progressFill"></div>
+        </div>
+        <p class="progress-label" id="progressLabel">Forging story... 0%</p>
+      </div>
+
+      <button class="btn btn--primary" id="uploadBtn" disabled>
+        <span>✨ Forge Story</span>
+      </button>
+    </section>
+
+    <!-- ==================== STORY LIBRARY ==================== -->
+    <section class="library">
+      <div class="library__heading">
+        <span class="library__icon">📚</span>
+        <h2>Story Vault</h2>
+      </div>
+
+      <div class="story-grid" id="storyGrid">
+        <!-- Story cards injected here -->
+      </div>
+
+      <div class="empty-state hidden" id="emptyState">
+        <p class="empty-state__icon">🕯️</p>
+        <p class="empty-state__text">The vault is empty. Forge a story above!</p>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ==================== NETFLIX-STYLE MODAL ==================== -->
+  <div class="modal-overlay hidden" id="modalOverlay">
+    <div class="modal" id="modal" role="dialog" aria-modal="true">
+      <button class="modal__close" id="modalClose" aria-label="Close">✕</button>
+
+      <div class="modal__header">
+        <h2 class="modal__title" id="modalTitle">Story Title</h2>
+        <div class="modal__meta">
+          <span class="modal__meta-item" id="modalVoice">🎙️ Voice</span>
+          <span class="modal__meta-item" id="modalDate">📅 Date</span>
+        </div>
+      </div>
+
+      <div class="modal__audio-wrap">
+        <audio class="modal__audio" id="modalAudio" controls></audio>
+      </div>
+
+      <div class="modal__story-wrap">
+        <h3 class="modal__story-heading">📝 Full Script</h3>
+        <div class="modal__story-text" id="modalStoryText">
+          <div class="mini-spinner" id="modalTextSpinner"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== GLOBAL LOADING OVERLAY ==================== -->
+  <div class="loading-overlay hidden" id="loadingOverlay">
+    <div class="spinner"></div>
+  </div>
+
+  <!-- ==================== TOAST CONTAINER ==================== -->
+  <div class="toast-container" id="toastContainer"></div>
+
+</body>
+</html>
+
+
+
+<!-- ==================== FRONTEND CONTROLLER SCRIPT ==================== -->
+  <script>
+    // 🔴 REPLACE THIS WITH YOUR EXACT API GATEWAY INVOKE URL
+    const API_INVOKE_URL = "https://r89ce8cgag.execute-api.us-east-1.amazonaws.com/";
+
+    // Application State
+    let selectedFile = null;
+    let storiesList = [];
+
+    // DOM Elements
+    const fileInput = document.getElementById('fileInput');
+    const dropzone = document.getElementById('dropzone');
+    const dropzoneContent = document.getElementById('dropzoneContent');
+    const dropzoneFile = document.getElementById('dropzoneFile');
+    const fileNameDisplay = document.getElementById('fileName');
+    const uploadBtn = document.getElementById('uploadBtn');
+    const progressWrap = document.getElementById('progressWrap');
+    const progressFill = document.getElementById('progressFill');
+    const progressLabel = document.getElementById('progressLabel');
+    const storyGrid = document.getElementById('storyGrid');
+    const emptyState = document.getElementById('emptyState');
+    const loadingOverlay = document.getElementById('loadingOverlay');
+    const toastContainer = document.getElementById('toastContainer');
+
+    // Modal Elements
+    const modalOverlay = document.getElementById('modalOverlay');
+    const modalClose = document.getElementById('modalClose');
+    const modalTitle = document.getElementById('modalTitle');
+    const modalVoice = document.getElementById('modalVoice');
+    const modalDate = document.getElementById('modalDate');
+    const modalAudio = document.getElementById('modalAudio');
+    const modalStoryText = document.getElementById('modalStoryText');
+
+    // Initialize Page
+    document.addEventListener('DOMContentLoaded', () => {
+      fetchStories();
+      setupEventListeners();
+    });
+
+    function setupEventListeners() {
+      // File Selection Changes
+      fileInput.addEventListener('change', (e) => {
+        handleFileSelect(e.target.files[0]);
+      });
+
+      // Drag and Drop Effects
+      ['dragenter', 'dragover'].forEach(eventName => {
+        dropzone.addEventListener(eventName, (e) => {
+          e.preventDefault();
+          dropzone.style.backgroundColor = "rgba(255, 224, 178, 0.5)";
+          dropzone.style.borderColor = "var(--clr-primary-dark)";
+        }, false);
+      });
+
+      ['dragleave', 'drop'].forEach(eventName => {
+        dropzone.addEventListener(eventName, (e) => {
+          e.preventDefault();
+          dropzone.style.backgroundColor = "rgba(255, 224, 178, 0.2)";
+          dropzone.style.borderColor = "var(--clr-primary-mid)";
+        }, false);
+      });
+
+      dropzone.addEventListener('drop', (e) => {
+        const dt = e.dataTransfer;
+        const file = dt.files[0];
+        handleFileSelect(file);
+      });
+
+      // Upload Initiation
+      uploadBtn.addEventListener('click', uploadAndProcessStory);
+
+      // Modal Closures
+      modalClose.addEventListener('click', closeModal);
+      modalOverlay.addEventListener('click', (e) => {
+        if (e.target === modalOverlay) closeModal();
+      });
+    }
+
+    // Handle Local File Selection
+    function handleFileSelect(file) {
+      if (!file) return;
+      
+      if (!file.name.endsWith('.txt')) {
+        showToast('❌ Please select a valid plain text (.txt) file.', 'error');
+        return;
+      }
+
+      selectedFile = file;
+      fileNameDisplay.textContent = file.name;
+      
+      // Update UI Views inside Dropzone
+      dropzoneContent.classList.add('hidden');
+      dropzoneFile.classList.remove('hidden');
+      uploadBtn.disabled = false;
+    }
+
+    // Simulated Progress UI + S3 upload wrapper
+    async function uploadAndProcessStory() {
+      if (!selectedFile) return;
+
+      uploadBtn.disabled = true;
+      progressWrap.classList.remove('hidden');
+      
+      // 1. Read file contents on client-side
+      const reader = new FileReader();
+      
+      reader.onload = async function(e) {
+        const fileContent = e.target.result;
+        
+        // Let's animate a realistic "forging" bar
+        let progress = 0;
+        const interval = setInterval(() => {
+          progress += 5;
+          if (progress <= 90) {
+            updateProgressBar(progress, `Hammering story metadata... ${progress}%`);
+          }
+        }, 100);
+
+        try {
+          // 2. Call API Gateway endpoint to run Polly synthesis and Dynamo logging
+          const response = await fetch(API_INVOKE_URL, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              textContent: fileContent,
+              filename: selectedFile.name
+            })
+          });
+
+          clearInterval(interval);
+
+          if (!response.ok) {
+            throw new Error(`Server returned status code: ${response.status}`);
+          }
+
+          const result = await response.json();
+          
+          // Complete progress bar animation
+          updateProgressBar(100, "Successfully forged!");
+          showToast('✨ Story forged and indexed successfully!');
+          
+          // Reset Upload Card State
+          setTimeout(() => {
+            resetUploadArea();
+            fetchStories(); // Reload the library catalog
+          }, 1000);
+
+        } catch (error) {
+          clearInterval(interval);
+          updateProgressBar(0, "Pipeline failed.");
+          showToast(`❌ Error: ${error.message}`, 'error');
+          uploadBtn.disabled = false;
+        }
+      };
+
+      reader.readAsText(selectedFile);
+    }
+
+    function updateProgressBar(percentage, label) {
+      progressFill.style.width = `${percentage}%`;
+      progressLabel.textContent = label;
+    }
+
+    function resetUploadArea() {
+      selectedFile = null;
+      fileInput.value = '';
+      progressWrap.classList.add('hidden');
+      progressFill.style.width = '0%';
+      dropzoneContent.classList.remove('hidden');
+      dropzoneFile.classList.add('hidden');
+      uploadBtn.disabled = true;
+    }
+
+    // API Call: Retrieve All Stories
+    async function fetchStories() {
+      loadingOverlay.classList.remove('hidden');
+      try {
+        const response = await fetch(API_INVOKE_URL);
+        if (!response.ok) throw new Error("Could not fetch the story vault catalog.");
+        
+        storiesList = await response.json();
+        renderStoriesGrid(storiesList);
+      } catch (error) {
+        console.error(error);
+        showToast("⚠️ Could not load story list. Check endpoint.", "error");
+        renderStoriesGrid([]); // fallback to empty state styling
+      } finally {
+        loadingOverlay.classList.add('hidden');
+      }
+    }
+
+    // Render Items inside Library
+    function renderStoriesGrid(stories) {
+      storyGrid.innerHTML = '';
+      if (!stories || stories.length === 0) {
+        emptyState.classList.remove('hidden');
+        return;
+      }
+
+      emptyState.classList.add('hidden');
+      
+      stories.forEach(story => {
+        const card = document.createElement('div');
+        card.className = 'story-card';
+        card.innerHTML = `
+          <div class="story-card__top">
+            <div class="story-card__emoji">📖</div>
+            <h3 class="story-card__title">${story.Title || 'Untitled Tale'}</h3>
+          </div>
+          <div class="story-card__footer">
+            <span class="story-card__voice">🎙️ Narrator: Joanna</span>
+            <span class="story-card__date">📅 ${formatDate(story.Timestamp)}</span>
+          </div>
+        `;
+        
+        card.addEventListener('click', () => openStoryModal(story));
+        storyGrid.appendChild(card);
+      });
+    }
+
+    // Modal Operations
+    function openStoryModal(story) {
+      modalTitle.textContent = story.Title || 'Untitled Tale';
+      modalVoice.textContent = '🎙️ Narrator: Joanna (Polly)';
+      modalDate.textContent = `📅 Found: ${formatDate(story.Timestamp)}`;
+      
+      // Set audio link
+      modalAudio.src = story.AudioUrl || '';
+      modalAudio.load();
+
+      // Show formatted text
+      const textContainer = document.getElementById('modalStoryText');
+      textContainer.innerHTML = '';
+      
+      // Preserves original formatting line breaks
+      const p = document.createElement('p');
+      p.style.whiteSpace = 'pre-wrap';
+      p.textContent = story.TextContent || 'No draft body text returned.';
+      textContainer.appendChild(p);
+
+      modalOverlay.classList.remove('hidden');
+    }
+
+    function closeModal() {
+      modalOverlay.classList.add('hidden');
+      modalAudio.pause();
+    }
+
+    // Utility Helpers
+    function formatDate(isoString) {
+      if (!isoString) return 'Unknown Date';
+      try {
+        const date = new Date(isoString);
+        return date.toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' });
+      } catch {
+        return 'Unknown';
+      }
+    }
+
+    function showToast(message, type = 'success') {
+      const toast = document.createElement('div');
+      toast.className = 'toast';
+      if (type === 'error') {
+        toast.style.borderLeft = "5px solid #ef4444";
+      } else {
+        toast.style.borderLeft = "5px solid var(--clr-accent-gold)";
+      }
+      toast.innerHTML = `<span>${message}</span>`;
+      toastContainer.appendChild(toast);
+
+      // Auto dismiss after 4 seconds
+      setTimeout(() => {
+        toast.style.animation = 'slideIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) reverse';
+        setTimeout(() => toast.remove(), 300);
+      }, 4000);
+    }
+  </script>
